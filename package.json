@@ -1,0 +1,76 @@
+{
+  "name": "judgelab",
+  "version": "0.1.0",
+  "description": "A production-quality online judge platform with lockdown exam browser",
+  "main": "index.js",
+  "scripts": {
+    "dev": "docker-compose up --build",
+    "dev:api": "cd apps/api && python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:worker": "cd worker && python -m celery worker -A main:app --loglevel=info",
+    "build": "npm run build:web && npm run build:api",
+    "build:web": "cd apps/web && npm run build",
+    "build:api": "cd apps/api && docker build -t judgelab-api .",
+    "build:worker": "cd worker && docker build -t judgelab-worker .",
+    "build:agent": "cd agent-win && dotnet build",
+    "test": "npm run test:web && npm run test:api",
+    "test:web": "cd apps/web && npm run test",
+    "test:api": "cd apps/api && python -m pytest",
+    "lint": "npm run lint:web && npm run lint:api",
+    "lint:web": "cd apps/web && npm run lint",
+    "lint:api": "cd apps/api && ruff check .",
+    "format": "npm run format:web && npm run format:api",
+    "format:web": "cd apps/web && npm run format",
+    "format:api": "cd apps/api && ruff format .",
+    "typecheck": "npm run typecheck:web && npm run typecheck:api",
+    "typecheck:web": "cd apps/web && npm run typecheck",
+    "typecheck:api": "cd apps/api && mypy .",
+    "seed": "cd apps/api && python -m scripts.seed_data",
+    "migrate": "cd apps/api && alembic upgrade head",
+    "migration": "cd apps/api && alembic revision --autogenerate -m"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.0",
+    "@commitlint/config-conventional": "^18.4.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/judgelab/judgelab.git"
+  },
+  "keywords": [
+    "online-judge",
+    "competitive-programming",
+    "exam-browser",
+    "coding-platform",
+    "security"
+  ],
+  "author": "JudgeLab Team",
+  "license": "Apache-2.0",
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
+  },
+  "lint-staged": {
+    "apps/web/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "apps/api/**/*.py": [
+      "ruff check --fix",
+      "ruff format"
+    ],
+    "worker/**/*.py": [
+      "ruff check --fix", 
+      "ruff format"
+    ]
+  }
+}

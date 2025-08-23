@@ -1,0 +1,39 @@
+{
+  "processes": [
+    "chatgpt",
+    "copilot",
+    "claude",
+    "bard",
+    "gemini",
+    "openai",
+    "anthropic",
+    "github copilot",
+    "tabnine",
+    "kite",
+    "codewhisperer",
+    "intellicode"
+  ],
+  "windowTitles": [
+    "ChatGPT",
+    "Claude",
+    "Bard",
+    "Gemini",
+    "GitHub Copilot",
+    "Tabnine",
+    "Amazon CodeWhisperer",
+    "OpenAI",
+    "Anthropic",
+    "AI Assistant",
+    "Code AI",
+    "Copilot Chat"
+  ],
+  "urls": [
+    "chat.openai.com",
+    "claude.ai",
+    "bard.google.com",
+    "gemini.google.com",
+    "copilot.github.com",
+    "tabnine.com",
+    "codewhisperer.aws"
+  ]
+}
