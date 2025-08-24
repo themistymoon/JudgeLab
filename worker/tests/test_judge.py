@@ -3,7 +3,7 @@ import tempfile
 import os
 from unittest.mock import Mock, patch
 
-from judge.executor import DockerExecutor, ExecutionResult
+from judge.executor import DockerExecutor
 from judge.checker import Checker, CheckerResult
 
 

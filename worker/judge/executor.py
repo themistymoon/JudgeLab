@@ -1,8 +1,6 @@
 import os
-import json
 import time
 import tempfile
-import subprocess
 from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
 
@@ -43,8 +41,8 @@ class DockerExecutor:
         # Create temporary directory for this execution
         with tempfile.TemporaryDirectory(dir=settings.JUDGE_WORK_DIR) as work_dir:
             try:
-                # Write source code and input
-                source_file = self._prepare_source(work_dir, language, source_code)
+                # Write source code and input  
+                self._prepare_source(work_dir, language, source_code)
                 input_file = os.path.join(work_dir, "input.txt")
                 with open(input_file, 'w', encoding='utf-8') as f:
                     f.write(input_data)
@@ -217,8 +215,8 @@ class DockerExecutor:
             try:
                 result = container.wait(timeout=timeout_sec)
                 exit_code = result["StatusCode"]
-            except:
-                # Timeout - kill container
+            except Exception:
+                # Timeout or other error - kill container
                 container.kill()
                 exit_code = 124  # Timeout exit code
             
@@ -246,7 +244,7 @@ class DockerExecutor:
                 stats = container.stats(stream=False)
                 memory_usage = stats["memory_stats"].get("usage", 0)
                 memory_kb = int(memory_usage / 1024)
-            except:
+            except Exception:
                 pass
             
             return ExecutionResult(
@@ -274,5 +272,5 @@ class DockerExecutor:
             try:
                 container = self.client.containers.get(container_name)
                 container.remove(force=True)
-            except:
+            except Exception:
                 pass

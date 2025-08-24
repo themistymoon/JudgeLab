@@ -1,11 +1,9 @@
 import os
-import json
 from datetime import datetime
-from typing import List, Dict, Any
+from typing import Dict, Any
 
 import structlog
 from celery import current_task
-from sqlalchemy.orm import Session
 
 from database import get_db
 from models import Submission, Problem, TestCase, SubmissionVerdict
@@ -170,7 +168,7 @@ def judge_submission(submission_id: int, source_code: str) -> Dict[str, Any]:
                 submission.verdict = SubmissionVerdict.RE
                 submission.judged_at = datetime.utcnow()
                 db.commit()
-        except:
+        except Exception:
             pass
         
         raise e

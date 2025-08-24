@@ -2,6 +2,7 @@ import os
 import sys
 from celery import Celery
 from dotenv import load_dotenv
+from tasks import judge_submission
 
 # Load environment variables
 load_dotenv()
@@ -25,9 +26,6 @@ app.conf.update(
     task_acks_late=True,
     worker_prefetch_multiplier=1,
 )
-
-# Import tasks
-from tasks import judge_submission
 
 # Register tasks
 app.task(judge_submission.judge_submission)

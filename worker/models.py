@@ -5,7 +5,6 @@ These should be kept in sync with the main API models.
 
 from sqlalchemy import Column, Integer, String, Text, DateTime, JSON, Enum, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
 from enum import Enum as PyEnum
 
 Base = declarative_base()
