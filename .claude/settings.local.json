@@ -12,7 +12,8 @@
       "Bash(git push:*)",
       "Bash(gh run list:*)",
       "Bash(gh run view:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(module names\" by properly defining package structure.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "additionalDirectories": [
       "D:\\d\\project\\JudgeLab\\apps",
