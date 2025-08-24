@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from api.v1.endpoints import auth, problems, attempts, submissions, integrity, gamification
+
+from api.v1.endpoints import attempts, auth, gamification, integrity, problems, submissions
 
 api_router = APIRouter()
 

@@ -1,6 +1,8 @@
-from typing import List, Optional
+from typing import Optional
+
 from sqlalchemy.orm import Session
-from models.problem import Problem, ProblemStatus, ProblemDifficulty
+
+from models.problem import Problem, ProblemDifficulty, ProblemStatus
 from schemas.problem import ProblemCreate, ProblemUpdate
 
 
@@ -9,18 +11,18 @@ def get_problems(
     skip: int = 0,
     limit: int = 50,
     difficulty: Optional[str] = None,
-    tags: Optional[List[str]] = None
-) -> List[Problem]:
+    tags: Optional[list[str]] = None
+) -> list[Problem]:
     query = db.query(Problem).filter(Problem.status == ProblemStatus.PUBLISHED)
-    
+
     if difficulty:
         query = query.filter(Problem.difficulty == ProblemDifficulty(difficulty))
-    
+
     if tags:
         # Simple tag filtering - in production, consider using proper JSON queries
         for tag in tags:
             query = query.filter(Problem.tags.contains([tag]))
-    
+
     return query.offset(skip).limit(limit).all()
 
 
@@ -43,7 +45,7 @@ def update_problem(db: Session, problem: Problem, problem_data: ProblemUpdate) -
     update_data = problem_data.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(problem, field, value)
-    
+
     problem.version += 1
     db.commit()
     db.refresh(problem)

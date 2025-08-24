@@ -1,18 +1,20 @@
-from sqlalchemy import Column, Integer, String, DateTime, Enum
-from sqlalchemy.sql import func
 from enum import Enum as PyEnum
+
+from sqlalchemy import Column, DateTime, Enum, Integer, String
+from sqlalchemy.sql import func
+
 from core.database import Base
 
 
 class UserRole(PyEnum):
     STUDENT = "student"
-    AUTHOR = "author" 
+    AUTHOR = "author"
     ADMIN = "admin"
 
 
 class User(Base):
     __tablename__ = "users"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
     display_name = Column(String, nullable=False)

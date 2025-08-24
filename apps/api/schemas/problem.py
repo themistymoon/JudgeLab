@@ -1,7 +1,9 @@
-from pydantic import BaseModel, Field
-from typing import List, Optional
 from datetime import datetime
-from models.problem import ProblemDifficulty, CheckerType, AvailabilityPolicy
+from typing import Optional
+
+from pydantic import BaseModel, Field
+
+from models.problem import AvailabilityPolicy, CheckerType, ProblemDifficulty
 
 
 class TestCaseCreate(BaseModel):
@@ -16,7 +18,7 @@ class TestCaseCreate(BaseModel):
 class TestCaseResponse(TestCaseCreate):
     id: int
     created_at: datetime
-    
+
     class Config:
         from_attributes = True
 
@@ -24,7 +26,7 @@ class TestCaseResponse(TestCaseCreate):
 class ProblemBase(BaseModel):
     title: str = Field(..., min_length=1, max_length=200)
     statement_md: str = Field(..., min_length=1)
-    tags: List[str] = []
+    tags: list[str] = []
     difficulty: ProblemDifficulty = ProblemDifficulty.EASY
     checker_type: CheckerType = CheckerType.DIFF
 
@@ -46,7 +48,7 @@ class ProblemCreate(ProblemBase):
 class ProblemUpdate(BaseModel):
     title: Optional[str] = Field(None, min_length=1, max_length=200)
     statement_md: Optional[str] = Field(None, min_length=1)
-    tags: Optional[List[str]] = None
+    tags: Optional[list[str]] = None
     difficulty: Optional[ProblemDifficulty] = None
     checker_type: Optional[CheckerType] = None
     time_limit_ms: Optional[int] = Field(None, gt=0, le=30000)
@@ -70,7 +72,7 @@ class ProblemResponse(ProblemBase):
     solve_time_limit_sec: Optional[int]
     max_attempts: Optional[int]
     visible_from_at: Optional[datetime]
-    visible_until_at: Optional[datetime] 
+    visible_until_at: Optional[datetime]
     attempt_open_at: Optional[datetime]
     attempt_close_at: Optional[datetime]
     availability_policy: AvailabilityPolicy
@@ -78,7 +80,7 @@ class ProblemResponse(ProblemBase):
     version: int
     created_at: datetime
     updated_at: datetime
-    
+
     class Config:
         from_attributes = True
 
@@ -87,9 +89,9 @@ class ProblemListResponse(BaseModel):
     id: int
     slug: str
     title: str
-    tags: List[str]
+    tags: list[str]
     difficulty: ProblemDifficulty
     created_at: datetime
-    
+
     class Config:
         from_attributes = True

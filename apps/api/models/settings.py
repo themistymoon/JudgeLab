@@ -1,14 +1,15 @@
-from sqlalchemy import Column, String, Integer, Text
+from sqlalchemy import Column, String, Text
+
 from core.database import Base
 
 
 class PlatformSettings(Base):
     __tablename__ = "platform_settings"
-    
+
     key = Column(String, primary_key=True)
     value = Column(Text, nullable=False)
     description = Column(String, nullable=True)
-    
+
     # Common settings with defaults
     @classmethod
     def get_defaults(cls):

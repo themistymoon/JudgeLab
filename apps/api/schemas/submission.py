@@ -1,7 +1,9 @@
-from pydantic import BaseModel, Field
-from typing import Optional, Dict, Any, List
 from datetime import datetime
-from models.submission import SubmissionVerdict, SubmissionLanguage
+from typing import Optional
+
+from pydantic import BaseModel, Field
+
+from models.submission import SubmissionLanguage, SubmissionVerdict
 
 
 class SubmissionCreate(BaseModel):
@@ -31,10 +33,10 @@ class SubmissionResponse(BaseModel):
     memory_kb: Optional[int]
     compile_log: Optional[str]
     first_failed_test: Optional[int]
-    test_results: Optional[List[TestResult]]
+    test_results: Optional[list[TestResult]]
     integrity_flagged: bool
     created_at: datetime
     judged_at: Optional[datetime]
-    
+
     class Config:
         from_attributes = True

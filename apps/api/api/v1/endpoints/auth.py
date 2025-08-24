@@ -1,15 +1,16 @@
 from datetime import timedelta
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from core.database import get_db
-from core.security import verify_password, get_password_hash, create_access_token, verify_token
 from core.config import settings
-from models.user import User, UserRole
+from core.database import get_db
+from core.security import create_access_token, verify_password, verify_token
 from models.gamification import GamificationProfile
-from schemas.user import UserCreate, UserResponse, UserLogin, TokenResponse
-from services.user import get_user_by_email, create_user
+from models.user import User
+from schemas.user import TokenResponse, UserCreate, UserResponse
+from services.user import create_user, get_user_by_email
 
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_PREFIX}/auth/token")
@@ -20,11 +21,11 @@ async def get_current_user(token: str = Depends(oauth2_scheme), db: Session = De
     user_id = payload.get("sub")
     if user_id is None:
         raise HTTPException(status_code=401, detail="Invalid token")
-    
+
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise HTTPException(status_code=401, detail="User not found")
-    
+
     return user
 
 
@@ -37,21 +38,21 @@ async def register(user_data: UserCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User with this email already exists"
         )
-    
+
     # Create user
     user = create_user(db, user_data)
-    
+
     # Create gamification profile
     profile = GamificationProfile(user_id=user.id)
     db.add(profile)
     db.commit()
-    
+
     # Generate token
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": str(user.id)}, expires_delta=access_token_expires
     )
-    
+
     return TokenResponse(
         access_token=access_token,
         expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,
@@ -68,12 +69,12 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": str(user.id)}, expires_delta=access_token_expires
     )
-    
+
     return TokenResponse(
         access_token=access_token,
         expires_in=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60,

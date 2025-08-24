@@ -1,12 +1,11 @@
-from typing import List
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from sqlalchemy import desc
+from sqlalchemy.orm import Session
 
-from core.database import get_db
-from models.user import User
-from models.gamification import GamificationProfile, Badge, UserBadge
 from api.v1.endpoints.auth import get_current_user
+from core.database import get_db
+from models.gamification import Badge, GamificationProfile, UserBadge
+from models.user import User
 
 router = APIRouter()
 
@@ -20,19 +19,19 @@ async def get_profile(
     profile = db.query(GamificationProfile).filter(
         GamificationProfile.user_id == current_user.id
     ).first()
-    
+
     if not profile:
         # Create profile if it doesn't exist
         profile = GamificationProfile(user_id=current_user.id)
         db.add(profile)
         db.commit()
         db.refresh(profile)
-    
+
     # Get user badges
     badges = db.query(Badge, UserBadge).join(
         UserBadge, Badge.id == UserBadge.badge_id
     ).filter(UserBadge.user_id == current_user.id).all()
-    
+
     badge_list = []
     for badge, user_badge in badges:
         badge_list.append({
@@ -43,7 +42,7 @@ async def get_profile(
             "rarity": badge.rarity,
             "awarded_at": user_badge.awarded_at
         })
-    
+
     return {
         "user_id": profile.user_id,
         "xp": profile.xp,
@@ -66,7 +65,7 @@ async def get_leaderboard(
     profiles = db.query(GamificationProfile, User).join(
         User, GamificationProfile.user_id == User.id
     ).order_by(desc(GamificationProfile.xp)).limit(limit).all()
-    
+
     leaderboard = []
     for rank, (profile, user) in enumerate(profiles, 1):
         leaderboard.append({
@@ -80,7 +79,7 @@ async def get_leaderboard(
             "streak_days": profile.streak_days,
             "problems_solved": profile.problems_solved
         })
-    
+
     return {"leaderboard": leaderboard}
 
 
@@ -88,7 +87,7 @@ async def get_leaderboard(
 async def get_available_badges(db: Session = Depends(get_db)):
     """Get all available badges."""
     badges = db.query(Badge).all()
-    
+
     return [
         {
             "id": badge.id,

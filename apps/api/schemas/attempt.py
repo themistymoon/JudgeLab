@@ -1,6 +1,8 @@
-from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel
+
 from models.attempt import AttemptStatus
 
 
@@ -16,7 +18,7 @@ class AttemptResponse(BaseModel):
     expires_at: Optional[datetime]
     status: AttemptStatus
     late_by_sec: int
-    
+
     class Config:
         from_attributes = True
 

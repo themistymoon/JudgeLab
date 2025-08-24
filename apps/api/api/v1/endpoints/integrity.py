@@ -1,14 +1,15 @@
-from typing import Optional
 from datetime import datetime, timedelta
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from core.database import get_db
-from core.config import settings
-from models.user import User
-from models.integrity import IntegrityEvent
-from schemas.integrity import IntegrityHeartbeat, IntegrityEventResponse, IntegrityStatusResponse
 from api.v1.endpoints.auth import get_current_user
+from core.config import settings
+from core.database import get_db
+from models.integrity import IntegrityEvent
+from models.user import User
+from schemas.integrity import IntegrityEventResponse, IntegrityHeartbeat, IntegrityStatusResponse
 
 router = APIRouter()
 
@@ -20,7 +21,7 @@ async def record_heartbeat(
     db: Session = Depends(get_db)
 ):
     """Record an integrity heartbeat from the lockdown agent."""
-    
+
     # Create integrity event
     event = IntegrityEvent(
         session_id=heartbeat.session_id,
@@ -33,10 +34,10 @@ async def record_heartbeat(
         sources_json=str(heartbeat.sources) if heartbeat.sources else None,
         app_version=heartbeat.app_version
     )
-    
+
     db.add(event)
     db.commit()
-    
+
     # Determine status
     violations = []
     if heartbeat.ai_detected:
@@ -47,9 +48,9 @@ async def record_heartbeat(
         violations.append("clipboard_blocked")
     if heartbeat.blocked_events.get("printscreen", 0) > 0:
         violations.append("screen_capture_blocked")
-    
+
     status = "flagged" if violations else "compliant"
-    
+
     return {
         "status": status,
         "violations": violations,
@@ -65,12 +66,12 @@ async def get_integrity_status(
     db: Session = Depends(get_db)
 ) -> IntegrityStatusResponse:
     """Get the current integrity status for a session."""
-    
+
     # Get the latest heartbeat for this session
     latest_event = db.query(IntegrityEvent).filter(
         IntegrityEvent.session_id == session_id
     ).order_by(IntegrityEvent.ts.desc()).first()
-    
+
     if not latest_event:
         return IntegrityStatusResponse(
             session_id=session_id,
@@ -80,11 +81,11 @@ async def get_integrity_status(
             violations=[],
             grace_period_ends=None
         )
-    
+
     # Check if session is recent (within grace period)
     now = datetime.utcnow()
     grace_cutoff = now - timedelta(seconds=settings.INTEGRITY_GRACE_PERIOD_SECONDS)
-    
+
     if latest_event.ts < grace_cutoff:
         status = "disconnected"
     else:
@@ -98,9 +99,9 @@ async def get_integrity_status(
             violations.append("clipboard_blocked")
         if latest_event.screen_capture_blocked:
             violations.append("screen_capture_blocked")
-        
+
         status = "flagged" if violations else "compliant"
-    
+
     return IntegrityStatusResponse(
         session_id=session_id,
         user_id=latest_event.user_id,
@@ -119,12 +120,12 @@ async def get_session_events(
 ):
     """Get integrity events for a session (admin only)."""
     from models.user import UserRole
-    
+
     if current_user.role != UserRole.ADMIN:
         raise HTTPException(status_code=403, detail="Admin access required")
-    
+
     events = db.query(IntegrityEvent).filter(
         IntegrityEvent.session_id == session_id
     ).order_by(IntegrityEvent.ts.desc()).limit(100).all()
-    
+
     return [IntegrityEventResponse.model_validate(event) for event in events]
