@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run lint)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm config get:*)",
+      "Bash(dotnet build:*)"
+    ],
+    "additionalDirectories": [
+      "D:\\d\\project\\JudgeLab\\apps",
+      "D:\\d\\project"
+    ]
+  }
+}

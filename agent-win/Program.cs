@@ -15,7 +15,7 @@ namespace JudgeLabAgent
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static async Task Main()
+        static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -24,7 +24,8 @@ namespace JudgeLabAgent
             var services = ConfigureServices();
             var serviceProvider = services.BuildServiceProvider();
             
-            var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+            var logger = loggerFactory.CreateLogger("JudgeLabAgent");
             logger.LogInformation("JudgeLab Agent starting...");
             
             try

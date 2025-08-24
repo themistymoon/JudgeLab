@@ -10,7 +10,6 @@ import {
   Bars3Icon, 
   XMarkIcon,
   CodeBracketIcon,
-  TrophyIcon,
   CogIcon,
   ArrowRightOnRectangleIcon
 } from '@heroicons/react/24/outline'

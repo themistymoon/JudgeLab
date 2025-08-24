@@ -6,6 +6,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <Nullable>enable</Nullable>
     <AssemblyTitle>JudgeLab Lockdown Agent</AssemblyTitle>
     <AssemblyDescription>Secure exam browser for JudgeLab</AssemblyDescription>
     <AssemblyCompany>JudgeLab Team</AssemblyCompany>

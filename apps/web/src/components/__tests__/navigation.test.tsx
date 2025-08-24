@@ -1,15 +1,18 @@
 import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import { Navigation } from '../navigation'
 
 // Mock next/link
 jest.mock('next/link', () => {
-  return ({ children, href }: { children: React.ReactNode; href: string }) => {
+  const MockLink = ({ children, href }: { children: React.ReactNode; href: string }) => {
     return <a href={href}>{children}</a>
   }
+  MockLink.displayName = 'MockLink'
+  return MockLink
 })
 
 // Mock the auth hook
-jest.mock('../../hooks/use-auth', () => ({
+jest.mock('../../providers/auth-provider', () => ({
   useAuth: () => ({
     user: null,
     logout: jest.fn(),
@@ -30,7 +33,7 @@ describe('Navigation', () => {
 
   it('shows navigation links when authenticated', () => {
     // Mock authenticated user
-    jest.doMock('../../hooks/use-auth', () => ({
+    jest.doMock('../../providers/auth-provider', () => ({
       useAuth: () => ({
         user: {
           id: 1,

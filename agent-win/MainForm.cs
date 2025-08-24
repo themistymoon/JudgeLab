@@ -74,8 +74,9 @@ namespace JudgeLabAgent
                 await _webView.EnsureCoreWebView2Async();
                 _webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
                 _webView.CoreWebView2.Settings.AreHostObjectsAllowed = false;
-                _webView.CoreWebView2.Settings.IsScriptDebuggingEnabled = false;
-                _webView.CoreWebView2.Settings.AreGeneralAutofillEnabled = false;
+                // Note: These properties may vary by WebView2 version
+                // _webView.CoreWebView2.Settings.IsScriptDebuggingEnabled = false;
+                // _webView.CoreWebView2.Settings.AreGeneralAutofillEnabled = false;
                 
                 // Disable right-click context menu
                 _webView.CoreWebView2.ContextMenuRequested += (s, e) => e.Handled = true;
