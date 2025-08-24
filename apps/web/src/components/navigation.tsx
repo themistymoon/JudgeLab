@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/providers/auth-provider'
 import { useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment } from 'react'

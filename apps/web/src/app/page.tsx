@@ -1,6 +1,6 @@
 'use client'
 
-import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/providers/auth-provider'
 import { Navigation } from '@/components/navigation'
 import { ProblemList } from '@/components/problem-list'
 import { Hero } from '@/components/hero'

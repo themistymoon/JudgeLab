@@ -30,7 +30,7 @@ class ProblemBase(BaseModel):
 
 
 class ProblemCreate(ProblemBase):
-    slug: str = Field(..., regex=r"^[a-z0-9-]+$", max_length=100)
+    slug: str = Field(..., pattern=r"^[a-z0-9-]+$", max_length=100)
     time_limit_ms: int = Field(2000, gt=0, le=30000)
     memory_limit_mb: int = Field(256, gt=0, le=2048)
     output_limit_kb: int = Field(64, gt=0, le=1024)
