@@ -16,8 +16,8 @@ namespace JudgeLabAgent
         private readonly IIntegrityMonitor _integrityMonitor;
         private readonly INetworkService _networkService;
         
-        private WebView2 _webView;
-        private Label _statusLabel;
+        private WebView2 _webView = null!;
+        private Label _statusLabel = null!;
         private string _currentStatus = "Initializing...";
         
         public MainForm(

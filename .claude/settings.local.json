@@ -6,7 +6,8 @@
       "Bash(npx tsc:*)",
       "Bash(npm run build:*)",
       "Bash(npm config get:*)",
-      "Bash(dotnet build:*)"
+      "Bash(dotnet build:*)",
+      "Bash(git add:*)"
     ],
     "additionalDirectories": [
       "D:\\d\\project\\JudgeLab\\apps",
