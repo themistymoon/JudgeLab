@@ -14,7 +14,10 @@
       "Bash(gh run view:*)",
       "Bash(python:*)",
       "Bash(module names\" by properly defining package structure.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(npm test)"
+      "Bash(npm test)",
+      "Bash(npm run test:*)",
+      "Bash(pip install:*)",
+      "Bash(chmod:*)"
     ],
     "additionalDirectories": [
       "D:\\d\\project\\JudgeLab\\apps",

@@ -27,7 +27,11 @@ describe('Navigation', () => {
   it('renders JudgeLab logo', () => {
     mockUseAuth.mockReturnValue({
       user: null,
+      token: null,
+      isLoading: false,
+      login: jest.fn(),
       logout: jest.fn(),
+      register: jest.fn(),
     })
 
     render(<Navigation />)
@@ -37,7 +41,11 @@ describe('Navigation', () => {
   it('shows sign in and get started buttons when not authenticated', () => {
     mockUseAuth.mockReturnValue({
       user: null,
+      token: null,
+      isLoading: false,
+      login: jest.fn(),
       logout: jest.fn(),
+      register: jest.fn(),
     })
 
     render(<Navigation />)
@@ -51,9 +59,15 @@ describe('Navigation', () => {
         id: 1,
         email: 'test@example.com',
         display_name: 'Test User',
-        role: 'STUDENT'
+        role: 'STUDENT',
+        is_active: true,
+        created_at: '2024-01-01T00:00:00Z',
       },
+      token: 'fake-token',
+      isLoading: false,
+      login: jest.fn(),
       logout: jest.fn(),
+      register: jest.fn(),
     })
 
     render(<Navigation />)
