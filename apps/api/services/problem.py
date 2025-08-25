@@ -1,4 +1,3 @@
-from typing import Optional
 
 from sqlalchemy.orm import Session
 
@@ -10,8 +9,8 @@ def get_problems(
     db: Session,
     skip: int = 0,
     limit: int = 50,
-    difficulty: Optional[str] = None,
-    tags: Optional[list[str]] = None
+    difficulty: str | None = None,
+    tags: list[str] | None = None
 ) -> list[Problem]:
     query = db.query(Problem).filter(Problem.status == ProblemStatus.PUBLISHED)
 
@@ -26,7 +25,7 @@ def get_problems(
     return query.offset(skip).limit(limit).all()
 
 
-def get_problem_by_slug(db: Session, slug: str) -> Optional[Problem]:
+def get_problem_by_slug(db: Session, slug: str) -> Problem | None:
     return db.query(Problem).filter(Problem.slug == slug).first()
 
 

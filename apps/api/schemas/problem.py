@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -36,31 +35,31 @@ class ProblemCreate(ProblemBase):
     time_limit_ms: int = Field(2000, gt=0, le=30000)
     memory_limit_mb: int = Field(256, gt=0, le=2048)
     output_limit_kb: int = Field(64, gt=0, le=1024)
-    solve_time_limit_sec: Optional[int] = Field(None, gt=0, le=7200)
-    max_attempts: Optional[int] = Field(None, gt=0, le=100)
-    visible_from_at: Optional[datetime] = None
-    visible_until_at: Optional[datetime] = None
-    attempt_open_at: Optional[datetime] = None
-    attempt_close_at: Optional[datetime] = None
+    solve_time_limit_sec: int | None = Field(None, gt=0, le=7200)
+    max_attempts: int | None = Field(None, gt=0, le=100)
+    visible_from_at: datetime | None = None
+    visible_until_at: datetime | None = None
+    attempt_open_at: datetime | None = None
+    attempt_close_at: datetime | None = None
     availability_policy: AvailabilityPolicy = AvailabilityPolicy.HARD_CLOSE
 
 
 class ProblemUpdate(BaseModel):
-    title: Optional[str] = Field(None, min_length=1, max_length=200)
-    statement_md: Optional[str] = Field(None, min_length=1)
-    tags: Optional[list[str]] = None
-    difficulty: Optional[ProblemDifficulty] = None
-    checker_type: Optional[CheckerType] = None
-    time_limit_ms: Optional[int] = Field(None, gt=0, le=30000)
-    memory_limit_mb: Optional[int] = Field(None, gt=0, le=2048)
-    output_limit_kb: Optional[int] = Field(None, gt=0, le=1024)
-    solve_time_limit_sec: Optional[int] = Field(None, gt=0, le=7200)
-    max_attempts: Optional[int] = Field(None, gt=0, le=100)
-    visible_from_at: Optional[datetime] = None
-    visible_until_at: Optional[datetime] = None
-    attempt_open_at: Optional[datetime] = None
-    attempt_close_at: Optional[datetime] = None
-    availability_policy: Optional[AvailabilityPolicy] = None
+    title: str | None = Field(None, min_length=1, max_length=200)
+    statement_md: str | None = Field(None, min_length=1)
+    tags: list[str] | None = None
+    difficulty: ProblemDifficulty | None = None
+    checker_type: CheckerType | None = None
+    time_limit_ms: int | None = Field(None, gt=0, le=30000)
+    memory_limit_mb: int | None = Field(None, gt=0, le=2048)
+    output_limit_kb: int | None = Field(None, gt=0, le=1024)
+    solve_time_limit_sec: int | None = Field(None, gt=0, le=7200)
+    max_attempts: int | None = Field(None, gt=0, le=100)
+    visible_from_at: datetime | None = None
+    visible_until_at: datetime | None = None
+    attempt_open_at: datetime | None = None
+    attempt_close_at: datetime | None = None
+    availability_policy: AvailabilityPolicy | None = None
 
 
 class ProblemResponse(ProblemBase):
@@ -69,12 +68,12 @@ class ProblemResponse(ProblemBase):
     time_limit_ms: int
     memory_limit_mb: int
     output_limit_kb: int
-    solve_time_limit_sec: Optional[int]
-    max_attempts: Optional[int]
-    visible_from_at: Optional[datetime]
-    visible_until_at: Optional[datetime]
-    attempt_open_at: Optional[datetime]
-    attempt_close_at: Optional[datetime]
+    solve_time_limit_sec: int | None
+    max_attempts: int | None
+    visible_from_at: datetime | None
+    visible_until_at: datetime | None
+    attempt_open_at: datetime | None
+    attempt_close_at: datetime | None
     availability_policy: AvailabilityPolicy
     created_by: int
     version: int

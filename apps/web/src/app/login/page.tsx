@@ -24,7 +24,14 @@ export default function LoginPage() {
       await login(email, password)
       router.push('/')
     } catch (err: unknown) {
-      setError((err as any)?.response?.data?.detail || 'Login failed')
+      interface ApiError {
+        response?: {
+          data?: {
+            detail?: string;
+          };
+        };
+      }
+      setError((err as ApiError)?.response?.data?.detail || 'Login failed')
     } finally {
       setIsLoading(false)
     }

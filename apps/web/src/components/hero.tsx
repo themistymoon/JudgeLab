@@ -1,9 +1,10 @@
 'use client'
 
+import React from 'react'
 import Link from 'next/link'
 import { CodeBracketIcon, ShieldCheckIcon, TrophyIcon, ClockIcon } from '@heroicons/react/24/outline'
 
-export function Hero() {
+const Hero = React.memo(() => {
   return (
     <>
       {/* Hero Section */}
@@ -121,4 +122,8 @@ export function Hero() {
       </div>
     </>
   )
-}
+})
+
+Hero.displayName = 'Hero'
+
+export { Hero }

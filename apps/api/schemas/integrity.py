@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -7,9 +6,9 @@ from pydantic import BaseModel
 class IntegritySource(BaseModel):
     type: str  # "window", "process"
     name: str
-    title_hash: Optional[str] = None
-    display_id: Optional[int] = None
-    bounds: Optional[dict[str, int]] = None
+    title_hash: str | None = None
+    display_id: int | None = None
+    bounds: dict[str, int] | None = None
     is_foreground: bool = False
 
 
@@ -26,13 +25,13 @@ class IntegrityHeartbeat(BaseModel):
 class IntegrityEventResponse(BaseModel):
     id: int
     session_id: str
-    user_id: Optional[int]
+    user_id: int | None
     ts: datetime
     ai_detected: bool
     multi_display: bool
     clipboard_blocked: bool
     screen_capture_blocked: bool
-    app_version: Optional[str]
+    app_version: str | None
     created_at: datetime
 
     class Config:
@@ -41,8 +40,8 @@ class IntegrityEventResponse(BaseModel):
 
 class IntegrityStatusResponse(BaseModel):
     session_id: str
-    user_id: Optional[int]
+    user_id: int | None
     status: str  # "compliant", "flagged", "disconnected"
-    last_heartbeat: Optional[datetime]
+    last_heartbeat: datetime | None
     violations: list[str] = []
-    grace_period_ends: Optional[datetime] = None
+    grace_period_ends: datetime | None = None

@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -15,7 +14,7 @@ class AttemptResponse(BaseModel):
     user_id: int
     problem_id: int
     started_at: datetime
-    expires_at: Optional[datetime]
+    expires_at: datetime | None
     status: AttemptStatus
     late_by_sec: int
 
@@ -26,4 +25,4 @@ class AttemptResponse(BaseModel):
 class AttemptHeartbeat(BaseModel):
     attempt_id: int
     editor_activity: bool = False
-    integrity_data: Optional[dict] = None
+    integrity_data: dict | None = None

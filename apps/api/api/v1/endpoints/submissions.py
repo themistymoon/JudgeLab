@@ -1,4 +1,6 @@
 
+from datetime import UTC
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -33,7 +35,7 @@ async def create_submission(
 
     # Check if attempt has expired
     from datetime import datetime
-    now = datetime.utcnow()
+    now = datetime.now(UTC)
     late_by_sec = 0
 
     if attempt.expires_at and now > attempt.expires_at:

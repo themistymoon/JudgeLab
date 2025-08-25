@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, Field
 
@@ -15,11 +14,11 @@ class SubmissionCreate(BaseModel):
 class TestResult(BaseModel):
     test_id: int
     verdict: str
-    time_ms: Optional[int] = None
-    memory_kb: Optional[int] = None
-    input_preview: Optional[str] = None
-    output_preview: Optional[str] = None
-    expected_preview: Optional[str] = None
+    time_ms: int | None = None
+    memory_kb: int | None = None
+    input_preview: str | None = None
+    output_preview: str | None = None
+    expected_preview: str | None = None
 
 
 class SubmissionResponse(BaseModel):
@@ -29,14 +28,14 @@ class SubmissionResponse(BaseModel):
     problem_id: int
     lang: SubmissionLanguage
     verdict: SubmissionVerdict
-    time_ms: Optional[int]
-    memory_kb: Optional[int]
-    compile_log: Optional[str]
-    first_failed_test: Optional[int]
-    test_results: Optional[list[TestResult]]
+    time_ms: int | None
+    memory_kb: int | None
+    compile_log: str | None
+    first_failed_test: int | None
+    test_results: list[TestResult] | None
     integrity_flagged: bool
     created_at: datetime
-    judged_at: Optional[datetime]
+    judged_at: datetime | None
 
     class Config:
         from_attributes = True

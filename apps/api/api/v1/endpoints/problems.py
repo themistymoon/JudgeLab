@@ -1,4 +1,3 @@
-from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
@@ -24,8 +23,8 @@ router = APIRouter()
 async def list_problems(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, le=100),
-    difficulty: Optional[str] = None,
-    tags: Optional[str] = None,
+    difficulty: str | None = None,
+    tags: str | None = None,
     db: Session = Depends(get_db)
 ):
     """List published problems with optional filters."""

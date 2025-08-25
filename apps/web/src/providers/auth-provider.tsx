@@ -30,24 +30,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    const abortController = new AbortController()
+    
     // Check for existing token on mount
     const savedToken = Cookies.get('judgelab-token')
     if (savedToken) {
       setToken(savedToken)
       // Verify token and get user info
       api.get('/auth/me', {
-        headers: { Authorization: `Bearer ${savedToken}` }
+        headers: { Authorization: `Bearer ${savedToken}` },
+        signal: abortController.signal
       }).then(response => {
-        setUser(response.data)
+        if (!abortController.signal.aborted) {
+          setUser(response.data)
+        }
       }).catch(() => {
-        // Token is invalid, remove it
-        Cookies.remove('judgelab-token')
-        setToken(null)
+        if (!abortController.signal.aborted) {
+          // Token is invalid, remove it
+          Cookies.remove('judgelab-token')
+          setToken(null)
+        }
       }).finally(() => {
-        setIsLoading(false)
+        if (!abortController.signal.aborted) {
+          setIsLoading(false)
+        }
       })
     } else {
       setIsLoading(false)
+    }
+
+    return () => {
+      abortController.abort()
     }
   }, [])
 
@@ -64,7 +77,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     setToken(access_token)
     setUser(userData)
-    Cookies.set('judgelab-token', access_token, { expires: 7 }) // 7 days
+    Cookies.set('judgelab-token', access_token, { 
+      expires: 7, // 7 days
+      secure: window.location.protocol === 'https:',
+      sameSite: 'strict'
+    })
   }
 
   const logout = () => {
@@ -84,7 +101,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
     setToken(access_token)
     setUser(userData)
-    Cookies.set('judgelab-token', access_token, { expires: 7 })
+    Cookies.set('judgelab-token', access_token, { 
+      expires: 7,
+      secure: window.location.protocol === 'https:',
+      sameSite: 'strict'
+    })
   }
 
   return (

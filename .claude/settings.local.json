@@ -17,7 +17,11 @@
       "Bash(npm test)",
       "Bash(npm run test:*)",
       "Bash(pip install:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm outdated)",
+      "mcp__ide__getDiagnostics",
+      "Bash(ruff check:*)"
     ],
     "additionalDirectories": [
       "D:\\d\\project\\JudgeLab\\apps",

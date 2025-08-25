@@ -271,6 +271,11 @@ class DockerExecutor:
             # Cleanup container if it still exists
             try:
                 container = self.client.containers.get(container_name)
-                container.remove(force=True)
-            except Exception:
+                if container:
+                    container.remove(force=True)
+                    logger.debug("Cleaned up container", container_name=container_name)
+            except docker.errors.NotFound:
+                # Container already removed
                 pass
+            except Exception as e:
+                logger.warning("Failed to cleanup container", container_name=container_name, error=str(e))

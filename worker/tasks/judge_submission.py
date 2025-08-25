@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any
 
 import structlog
@@ -19,7 +19,8 @@ def judge_submission(submission_id: int, source_code: str) -> Dict[str, Any]:
     Judge a submission against test cases.
     This is the main Celery task for judging.
     """
-    db = next(get_db())
+    db_gen = get_db()
+    db = next(db_gen)
     
     try:
         # Get submission and problem
@@ -134,7 +135,7 @@ def judge_submission(submission_id: int, source_code: str) -> Dict[str, Any]:
         submission.memory_kb = max_memory
         submission.first_failed_test = first_failed_test
         submission.test_results = results
-        submission.judged_at = datetime.utcnow()
+        submission.judged_at = datetime.now(timezone.utc)
         
         db.commit()
         
@@ -166,7 +167,7 @@ def judge_submission(submission_id: int, source_code: str) -> Dict[str, Any]:
             submission = db.query(Submission).filter(Submission.id == submission_id).first()
             if submission:
                 submission.verdict = SubmissionVerdict.RE
-                submission.judged_at = datetime.utcnow()
+                submission.judged_at = datetime.now(timezone.utc)
                 db.commit()
         except Exception:
             pass
@@ -174,7 +175,10 @@ def judge_submission(submission_id: int, source_code: str) -> Dict[str, Any]:
         raise e
     
     finally:
-        db.close()
+        try:
+            db.close()
+        except Exception:
+            pass
 
 
 def _store_source_code(submission_id: int, source_code: str) -> str:

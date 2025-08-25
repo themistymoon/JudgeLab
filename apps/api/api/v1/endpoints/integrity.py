@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -17,7 +16,7 @@ router = APIRouter()
 @router.post("/heartbeat")
 async def record_heartbeat(
     heartbeat: IntegrityHeartbeat,
-    current_user: Optional[User] = Depends(get_current_user),
+    current_user: User | None = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """Record an integrity heartbeat from the lockdown agent."""
@@ -62,7 +61,7 @@ async def record_heartbeat(
 @router.get("/status")
 async def get_integrity_status(
     session_id: str,
-    current_user: Optional[User] = Depends(get_current_user),
+    current_user: User | None = Depends(get_current_user),
     db: Session = Depends(get_db)
 ) -> IntegrityStatusResponse:
     """Get the current integrity status for a session."""

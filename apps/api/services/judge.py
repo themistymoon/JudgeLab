@@ -1,5 +1,6 @@
 import hashlib
 import os
+from datetime import UTC
 
 from celery import Celery
 
@@ -72,7 +73,7 @@ def submit_solution(submission_id: int, source_code: str):
         submission.memory_kb = memory_kb
 
         from datetime import datetime
-        submission.judged_at = datetime.utcnow()
+        submission.judged_at = datetime.now(UTC)
 
         db.commit()
 
