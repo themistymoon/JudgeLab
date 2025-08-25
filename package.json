@@ -5,9 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "docker-compose up --build",
+    "dev:local": "echo 'Use ./start-local.sh (Linux/Mac) or start-local.bat (Windows) for easy setup!' && npm run setup:local",
     "dev:api": "cd apps/api && python -m uvicorn main:app --reload --host 0.0.0.0 --port 8000",
     "dev:web": "cd apps/web && npm run dev",
     "dev:worker": "cd worker && python -m celery worker -A main:app --loglevel=info",
+    "dev:databases": "docker-compose up postgres redis -d",
+    "install:all": "npm ci && cd apps/web && npm ci",
+    "setup:local": "npm run install:all && echo 'Dependencies installed! Run ./start-local.sh or start-local.bat to continue.'",
     "build": "npm run build:web && npm run build:api",
     "build:web": "cd apps/web && npm run build",
     "build:api": "cd apps/api && docker build -t judgelab-api .",

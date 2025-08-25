@@ -49,34 +49,76 @@ JudgeLab combines a competitive programming platform with enterprise-grade secur
 ## 🏃‍♂️ Quick Start
 
 ### Prerequisites
-- Docker & Docker Compose
-- Node.js 18+ (for frontend development)
-- Python 3.12+ (for backend development) 
-- .NET 8.0 (for Windows agent development)
+- **For full setup**: Docker & Docker Compose
+- **For local development**: Node.js 18+, Python 3.12+ 
+- **For Windows agent**: .NET 8.0
+- **Optional**: PostgreSQL and Redis (if not using Docker)
 
-### One-Command Setup
+### 🚀 One-Click Local Setup
 
-```bash
-# Clone the repository
-git clone https://github.com/judgelab/judgelab.git
-cd judgelab
-
-# Start all services
-make dev
+**Windows:**
+```cmd
+start-local.bat
 ```
 
-This will:
-1. Start PostgreSQL and Redis containers
-2. Run database migrations
-3. Seed initial data (admin, author, sample problems)
-4. Launch API, Web, and Worker services
-5. Start Nginx reverse proxy
+**Linux/Mac:**
+```bash
+./start-local.sh
+```
+
+These scripts will:
+1. Install all dependencies automatically
+2. Set up environment files from examples
+3. Give you options for different startup modes
+4. Handle the complexity for you!
+
+### Manual Setup Options
+
+#### Option 1: Full Docker Setup (Recommended)
+```bash
+# Clone and start everything with Docker
+git clone https://github.com/judgelab/judgelab.git
+cd judgelab
+docker-compose up --build
+```
+
+#### Option 2: Local Development (No Docker)
+```bash
+# 1. Install dependencies
+npm run setup:local
+
+# 2. Set up environment variables (or use start-local script)
+cp apps/web/.env.example apps/web/.env.local
+cp apps/api/.env.example apps/api/.env
+
+# 3. Start services individually
+npm run dev:web    # Frontend at http://localhost:3000
+npm run dev:api    # Backend at http://localhost:8000
+npm run dev:worker # Background worker
+```
+
+#### Option 3: Hybrid Setup
+```bash
+# Use Docker for databases only
+docker-compose up postgres redis -d
+
+# Run application services locally  
+npm run dev:web
+npm run dev:api
+npm run dev:worker
+```
 
 ### Access the Platform
 
+**Full Docker Setup:**
 - **Web Interface**: http://localhost
-- **API Documentation**: http://localhost/api/v1/docs  
+- **API Documentation**: http://localhost/api/v1/docs
 - **Admin Panel**: Login with `admin@judgelab.dev` / `admin123`
+
+**Local Development:**
+- **Web Interface**: http://localhost:3000
+- **API Documentation**: http://localhost:8000/docs
+- **Direct API**: http://localhost:8000/api/v1/
 
 ### Default Accounts
 

@@ -26,8 +26,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: package-lock.json
     
     - name: Setup Python (for api and worker)
       if: matrix.component != 'web'
@@ -119,7 +117,7 @@ jobs:
   build-images:
     runs-on: ubuntu-latest
     needs: [lint-and-test]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: false  # Disabled for local-only setup
     
     permissions:
       contents: read
@@ -188,7 +186,7 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     needs: [build-images, security-scan]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: false  # Disabled for local-only setup
     environment: staging
     
     steps:
